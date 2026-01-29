@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة كاهوت TseYFZ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- شاشة الدخول -->
+        <div id="login-screen" class="screen active">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>كاهوتTseYFZ </h1>
+            </div>
+            
+            <div class="login-form">
+                <div class="input-group">
+                    <label for="player-name"><i class="fas fa-user"></i> اسم اللاعب</label>
+                    <input type="text" id="player-name" placeholder="أدخل اسمك">
+                </div>
+                
+                <div class="input-group">
+                    <label for="game-code"><i class="fas fa-key"></i> كود اللعبة</label>
+                    <input type="text" id="game-code" placeholder="أدخل كود اللعبة">
+                </div>
+                
+                <button id="join-game" class="btn-primary">
+                    <i class="fas fa-play"></i> انضم للعبة
+                </button>
+                
+                <div class="divider">
+                    <span>أو</span>
+                </div>
+                
+                <button id="create-game" class="btn-secondary">
+                    <i class="fas fa-plus-circle"></i> أنشئ لعبة جديدة
+                </button>
+            </div>
+            
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> كيفية اللعب:</h3>
+                <ol>
+                    <li>ادخل اسمك وكود اللعبة للانضمام</li>
+                    <li>أو أنشئ لعبة جديدة وشارك الكود مع أصدقائك</li>
+                    <li>أجب على الأسئلة بسرعة لتحصل على نقاط أكثر</li>
+                    <li>تابع ترتيبك على لوحة المتصدرين</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- شاشة الانتظار -->
+        <div id="waiting-screen" class="screen">
+            <div class="waiting-header">
+                <h2><i class="fas fa-hourglass-half"></i> في انتظار بدء اللعبة</h2>
+                <p>شارك هذا الكود مع اللاعبين الآخرين:</p>
+                <div class="game-code-display">
+                    <span id="display-game-code">----</span>
+                    <button id="copy-code" class="btn-small">
+                        <i class="fas fa-copy"></i> نسخ
+                    </button>
+                </div>
+                <p class="player-count">اللاعبون المتصلون: <span id="connected-players">0</span></p>
+            </div>
+            
+            <div class="players-list">
+                <h3><i class="fas fa-users"></i> قائمة اللاعبين:</h3>
+                <ul id="players-list"></ul>
+            </div>
+            
+            <button id="start-game" class="btn-primary" disabled>
+                <i class="fas fa-play-circle"></i> ابدأ اللعبة
+            </button>
+        </div>
+        
+        <!-- شاشة السؤال -->
+        <div id="question-screen" class="screen">
+            <div class="question-header">
+                <div class="timer-container">
+                    <div class="timer-circle">
+                        <span id="timer">10</span>
+                    </div>
+                </div>
+                <div class="question-info">
+                    <p>سؤال <span id="question-number">1</span> من <span id="total-questions">10</span></p>
+                    <h2 id="question-text">هذا نص السؤال يظهر هنا</h2>
+                </div>
+            </div>
+            
+            <div class="answers-container">
+                <div class="answer-row">
+                    <button class="answer-btn" data-index="0">
+                        <span class="answer-letter">أ</span>
+                        <span class="answer-text" id="answer-0">الإجابة الأولى</span>
+                    </button>
+                    <button class="answer-btn" data-index="1">
+                        <span class="answer-letter">ب</span>
+                        <span class="answer-text" id="answer-1">الإجابة الثانية</span>
+                    </button>
+                </div>
+                <div class="answer-row">
+                    <button class="answer-btn" data-index="2">
+                        <span class="answer-letter">ج</span>
+                        <span class="answer-text" id="answer-2">الإجابة الثالثة</span>
+                    </button>
+                    <button class="answer-btn" data-index="3">
+                        <span class="answer-letter">د</span>
+                        <span class="answer-text" id="answer-3">الإجابة الرابعة</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="answered-info">
+                <p>تم الإجابة: <span id="answered-count">0</span> من <span id="total-players">0</span></p>
+            </div>
+        </div>
+        
+        <!-- شاشة النتائج -->
+        <div id="results-screen" class="screen">
+            <div class="results-header">
+                <h2><i class="fas fa-trophy"></i> النتائج</h2>
+                <p>الإجابة الصحيحة: <span id="correct-answer-text">---</span></p>
+            </div>
+            
+            <div class="leaderboard">
+                <h3><i class="fas fa-chart-bar"></i> لوحة المتصدرين</h3>
+                <ol id="leaderboard-list"></ol>
+            </div>
+            
+            <button id="next-question" class="btn-primary">
+                <i class="fas fa-forward"></i> السؤال التالي
+            </button>
+        </div>
+        
+        <!-- شاشة النهائية -->
+        <div id="final-screen" class="screen">
+            <div class="final-header">
+                <h1><i class="fas fa-award"></i> نهاية اللعبة</h1>
+                <p class="winner">الفائز: <span id="winner-name">---</span></p>
+            </div>
+            
+            <div class="final-leaderboard">
+                <h2><i class="fas fa-medal"></i> الترتيب النهائي</h2>
+                <ol id="final-leaderboard"></ol>
+            </div>
+            
+            <div class="final-actions">
+                <button id="play-again" class="btn-primary">
+                    <i class="fas fa-redo"></i> العب مرة أخرى
+                </button>
+                <button id="new-game" class="btn-secondary">
+                    <i class="fas fa-home"></i> العودة للرئيسية
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
